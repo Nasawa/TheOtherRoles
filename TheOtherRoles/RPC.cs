@@ -13,7 +13,7 @@ using System;
 
 namespace TheOtherRoles
 {
-    enum RoleId {
+    public enum RoleId {
         Jester,
         Mayor,
         Engineer,
@@ -150,122 +150,122 @@ namespace TheOtherRoles
                 if (player.PlayerId == playerId) {
                     switch((RoleId)roleId) {
                     case RoleId.Jester:
-                        Jester.jester = player;
+                        Jester.player = player;
                         break;
                     case RoleId.Mayor:
-                        Mayor.mayor = player;
+                        Mayor.player = player;
                         break;
                     case RoleId.Engineer:
-                        Engineer.engineer = player;
+                        Engineer.player = player;
                         break;
                     case RoleId.Sheriff:
-                        Sheriff.sheriff = player;
+                        Sheriff.player = player;
                         break;
                     case RoleId.Lighter:
-                        Lighter.lighter = player;
+                        Lighter.player = player;
                         break;
                     case RoleId.Godfather:
-                        Godfather.godfather = player;
+                        Godfather.player = player;
                         break;
                     case RoleId.Mafioso:
-                        Mafioso.mafioso = player;
+                        Mafioso.player = player;
                         break;
                     case RoleId.Janitor:
-                        Janitor.janitor = player;
+                        Janitor.player = player;
                         break;
                     case RoleId.Detective:
-                        Detective.detective = player;
+                        Detective.player = player;
                         break;
                     case RoleId.TimeMaster:
-                        TimeMaster.timeMaster = player;
+                        TimeMaster.player = player;
                         break;
                     case RoleId.Medic:
-                        Medic.medic = player;
+                        Medic.player = player;
                         break;
                     case RoleId.Shifter:
-                        Shifter.shifter = player;
+                        Shifter.player = player;
                         break;
                     case RoleId.Swapper:
-                        Swapper.swapper = player;
+                        Swapper.player = player;
                         break;
                     case RoleId.Lover:
                         if (flag == 0) Lovers.lover1 = player;
                         else Lovers.lover2 = player;
                         break;
                     case RoleId.Seer:
-                        Seer.seer = player;
+                        Seer.player = player;
                         break;
                     case RoleId.Morphling:
-                        Morphling.morphling = player;
+                        Morphling.player = player;
                         break;
                     case RoleId.Camouflager:
-                        Camouflager.camouflager = player;
+                        Camouflager.player = player;
                         break;
                     case RoleId.Hacker:
-                        Hacker.hacker = player;
+                        Hacker.player = player;
                         break;
                     case RoleId.Mini:
-                        Mini.mini = player;
+                        Mini.player = player;
                         break;
                     case RoleId.Tracker:
-                        Tracker.tracker = player;
+                        Tracker.player = player;
                         break;
                     case RoleId.Vampire:
-                        Vampire.vampire = player;
+                        Vampire.player = player;
                         break;
                     case RoleId.Snitch:
-                        Snitch.snitch = player;
+                        Snitch.player = player;
                         break;
                     case RoleId.Jackal:
-                        Jackal.jackal = player;
+                        Jackal.player = player;
                         break;
                     case RoleId.Sidekick:
-                        Sidekick.sidekick = player;
+                        Sidekick.player = player;
                         break;
                     case RoleId.Eraser:
-                        Eraser.eraser = player;
+                        Eraser.player = player;
                         break;
                     case RoleId.Spy:
-                        Spy.spy = player;
+                        Spy.player = player;
                         break;
                     case RoleId.Trickster:
-                        Trickster.trickster = player;
+                        Trickster.player = player;
                         break;
                     case RoleId.Cleaner:
-                        Cleaner.cleaner = player;
+                        Cleaner.player = player;
                         break;
                     case RoleId.Warlock:
-                        Warlock.warlock = player;
+                        Warlock.player = player;
                         break;
                     case RoleId.SecurityGuard:
-                        SecurityGuard.securityGuard = player;
+                        SecurityGuard.player = player;
                         break;
                     case RoleId.Arsonist:
-                        Arsonist.arsonist = player;
+                        Arsonist.player = player;
                         break;
                     case RoleId.Guesser:
-                        Guesser.guesser = player;
+                        Guesser.player = player;
                         break;
                     case RoleId.BountyHunter:
-                        BountyHunter.bountyHunter = player;
+                        BountyHunter.player = player;
                         break;
                     case RoleId.Bait:
-                        Bait.bait = player;
+                        Bait.player = player;
                         break;
                     case RoleId.Vulture:
-                        Vulture.vulture = player;
+                        Vulture.player = player;
                         break;
                     case RoleId.Medium:
-                        Medium.medium = player;
+                        Medium.player = player;
                         break;
                     case RoleId.Lawyer:
-                        Lawyer.lawyer = player;
+                        Lawyer.player = player;
                         break;
                     case RoleId.Pursuer:
-                        Pursuer.pursuer = player;
+                        Pursuer.player = player;
                         break;
                     case RoleId.Witch:
-                        Witch.witch = player;
+                        Witch.player = player;
                         break;
                     }
                 }
@@ -337,7 +337,7 @@ namespace TheOtherRoles
 
         public static void timeMasterRewindTime() {
             TimeMaster.shieldActive = false; // Shield is no longer active when rewinding
-            if(TimeMaster.timeMaster != null && TimeMaster.timeMaster == PlayerControl.LocalPlayer) {
+            if(TimeMaster.player != null && TimeMaster.player == PlayerControl.LocalPlayer) {
                 resetTimeMasterButton();
             }
             HudManager.Instance.FullScreen.color = new Color(0f, 0.5f, 0.8f, 0.3f);
@@ -346,7 +346,7 @@ namespace TheOtherRoles
                 if (p == 1f) HudManager.Instance.FullScreen.enabled = false;
             })));
 
-            if (TimeMaster.timeMaster == null || PlayerControl.LocalPlayer == TimeMaster.timeMaster) return; // Time Master himself does not rewind
+            if (TimeMaster.player == null || PlayerControl.LocalPlayer == TimeMaster.player) return; // Time Master himself does not rewind
 
             TimeMaster.isRewinding = true;
 
@@ -371,10 +371,10 @@ namespace TheOtherRoles
         }
 
         public static void shieldedMurderAttempt() {
-            if (Medic.shielded == null || Medic.medic == null) return;
+            if (Medic.shielded == null || Medic.player == null) return;
             
             bool isShieldedAndShow = Medic.shielded == PlayerControl.LocalPlayer && Medic.showAttemptToShielded;
-            bool isMedicAndShow = Medic.medic == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
+            bool isMedicAndShow = Medic.player == PlayerControl.LocalPlayer && Medic.showAttemptToMedic;
 
             if ((isShieldedAndShow || isMedicAndShow) && HudManager.Instance?.FullScreen != null) {
                 HudManager.Instance.FullScreen.enabled = true;
@@ -394,7 +394,7 @@ namespace TheOtherRoles
         }
 
         public static void shifterShift(byte targetId) {
-            PlayerControl oldShifter = Shifter.shifter;
+            PlayerControl oldShifter = Shifter.player;
             PlayerControl player = Helpers.playerById(targetId);
             if (player == null || oldShifter == null) return;
 
@@ -402,7 +402,7 @@ namespace TheOtherRoles
             Shifter.clearAndReload();
 
             // Suicide (exile) when impostor or impostor variants
-            if (player.Data.Role.IsImpostor || player == Jackal.jackal || player == Sidekick.sidekick || Jackal.formerJackals.Contains(player) || player == Jester.jester || player == Arsonist.arsonist || player == Vulture.vulture || player == Lawyer.lawyer) {
+            if (player.Data.Role.IsImpostor || player == Jackal.player || player == Sidekick.player || Jackal.formerJackals.Contains(player) || player == Jester.player || player == Arsonist.player || player == Vulture.player || player == Lawyer.player) {
                 oldShifter.Exiled();
                 return;
             }
@@ -423,45 +423,45 @@ namespace TheOtherRoles
             }
 
             // Shift role
-            if (Mayor.mayor != null && Mayor.mayor == player)
-                Mayor.mayor = oldShifter;
-            if (Engineer.engineer != null && Engineer.engineer == player)
-                Engineer.engineer = oldShifter;
-            if (Sheriff.sheriff != null && Sheriff.sheriff == player)
-                Sheriff.sheriff = oldShifter;
-            if (Lighter.lighter != null && Lighter.lighter == player)
-                Lighter.lighter = oldShifter;
-            if (Detective.detective != null && Detective.detective == player)
-                Detective.detective = oldShifter;
-            if (TimeMaster.timeMaster != null && TimeMaster.timeMaster == player)
-                TimeMaster.timeMaster = oldShifter;
-            if (Medic.medic != null && Medic.medic == player)
-                Medic.medic = oldShifter;
-            if (Swapper.swapper != null && Swapper.swapper == player)
-                Swapper.swapper = oldShifter;
-            if (Seer.seer != null && Seer.seer == player)
-                Seer.seer = oldShifter;
-            if (Hacker.hacker != null && Hacker.hacker == player)
-                Hacker.hacker = oldShifter;
-            if (Mini.mini != null && Mini.mini == player)
-                Mini.mini = oldShifter;
-            if (Tracker.tracker != null && Tracker.tracker == player)
-                Tracker.tracker = oldShifter;
-            if (Snitch.snitch != null && Snitch.snitch == player)
-                Snitch.snitch = oldShifter;
-            if (Spy.spy != null && Spy.spy == player)
-                Spy.spy = oldShifter;
-            if (SecurityGuard.securityGuard != null && SecurityGuard.securityGuard == player)
-                SecurityGuard.securityGuard = oldShifter;
-            if (Guesser.guesser != null && Guesser.guesser == player)
-                Guesser.guesser = oldShifter;
-            if (Bait.bait != null && Bait.bait == player) {
-                Bait.bait = oldShifter;
-                if (Bait.bait.Data.IsDead) Bait.reported = true;
+            if (Mayor.player != null && Mayor.player == player)
+                Mayor.player = oldShifter;
+            if (Engineer.player != null && Engineer.player == player)
+                Engineer.player = oldShifter;
+            if (Sheriff.player != null && Sheriff.player == player)
+                Sheriff.player = oldShifter;
+            if (Lighter.player != null && Lighter.player == player)
+                Lighter.player = oldShifter;
+            if (Detective.player != null && Detective.player == player)
+                Detective.player = oldShifter;
+            if (TimeMaster.player != null && TimeMaster.player == player)
+                TimeMaster.player = oldShifter;
+            if (Medic.player != null && Medic.player == player)
+                Medic.player = oldShifter;
+            if (Swapper.player != null && Swapper.player == player)
+                Swapper.player = oldShifter;
+            if (Seer.player != null && Seer.player == player)
+                Seer.player = oldShifter;
+            if (Hacker.player != null && Hacker.player == player)
+                Hacker.player = oldShifter;
+            if (Mini.player != null && Mini.player == player)
+                Mini.player = oldShifter;
+            if (Tracker.player != null && Tracker.player == player)
+                Tracker.player = oldShifter;
+            if (Snitch.player != null && Snitch.player == player)
+                Snitch.player = oldShifter;
+            if (Spy.player != null && Spy.player == player)
+                Spy.player = oldShifter;
+            if (SecurityGuard.player != null && SecurityGuard.player == player)
+                SecurityGuard.player = oldShifter;
+            if (Guesser.player != null && Guesser.player == player)
+                Guesser.player = oldShifter;
+            if (Bait.player != null && Bait.player == player) {
+                Bait.player = oldShifter;
+                if (Bait.player.Data.IsDead) Bait.reported = true;
             }
                 
-            if (Medium.medium != null && Medium.medium == player)
-                Medium.medium = oldShifter;
+            if (Medium.player != null && Medium.player == player)
+                Medium.player = oldShifter;
 
             // Set cooldowns to max for both players
             if (PlayerControl.LocalPlayer == oldShifter || PlayerControl.LocalPlayer == player)
@@ -477,16 +477,16 @@ namespace TheOtherRoles
 
         public static void morphlingMorph(byte playerId) {  
             PlayerControl target = Helpers.playerById(playerId);
-            if (Morphling.morphling == null || target == null) return;
+            if (Morphling.player == null || target == null) return;
 
             Morphling.morphTimer = Morphling.duration;
             Morphling.morphTarget = target;
             if (Camouflager.camouflageTimer <= 0f)
-                Morphling.morphling.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+                Morphling.player.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
         }
 
         public static void camouflagerCamouflage() {
-            if (Camouflager.camouflager == null) return;
+            if (Camouflager.player == null) return;
 
             Camouflager.camouflageTimer = Camouflager.duration;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -499,7 +499,7 @@ namespace TheOtherRoles
                 return;
             }
 
-            if (Vampire.vampire == null) return;
+            if (Vampire.player == null) return;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
                 if (player.PlayerId == targetId && !player.Data.IsDead) {
                         Vampire.bitten = player;
@@ -530,14 +530,14 @@ namespace TheOtherRoles
             } else {
                 DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 erasePlayerRoles(player.PlayerId, true);
-                Sidekick.sidekick = player;
+                Sidekick.player = player;
             }
             Jackal.canCreateSidekick = false;
         }
 
         public static void sidekickPromotes() {
             Jackal.removeCurrentJackal();
-            Jackal.jackal = Sidekick.sidekick;
+            Jackal.player = Sidekick.player;
             Jackal.canCreateSidekick = Jackal.jackalPromotedFromSidekickCanCreateSidekick;
             Sidekick.clearAndReload();
             return;
@@ -548,57 +548,57 @@ namespace TheOtherRoles
             if (player == null) return;
 
             // Crewmate roles
-            if (player == Mayor.mayor) Mayor.clearAndReload();
-            if (player == Engineer.engineer) Engineer.clearAndReload();
-            if (player == Sheriff.sheriff) Sheriff.clearAndReload();
-            if (player == Lighter.lighter) Lighter.clearAndReload();
-            if (player == Detective.detective) Detective.clearAndReload();
-            if (player == TimeMaster.timeMaster) TimeMaster.clearAndReload();
-            if (player == Medic.medic) Medic.clearAndReload();
-            if (player == Shifter.shifter) Shifter.clearAndReload();
-            if (player == Seer.seer) Seer.clearAndReload();
-            if (player == Hacker.hacker) Hacker.clearAndReload();
-            if (player == Mini.mini) Mini.clearAndReload();
-            if (player == Tracker.tracker) Tracker.clearAndReload();
-            if (player == Snitch.snitch) Snitch.clearAndReload();
-            if (player == Swapper.swapper) Swapper.clearAndReload();
-            if (player == Spy.spy) Spy.clearAndReload();
-            if (player == SecurityGuard.securityGuard) SecurityGuard.clearAndReload();
-            if (player == Bait.bait) Bait.clearAndReload();
-            if (player == Medium.medium) Medium.clearAndReload();
+            if (player == Mayor.player) Mayor.clearAndReload();
+            if (player == Engineer.player) Engineer.clearAndReload();
+            if (player == Sheriff.player) Sheriff.clearAndReload();
+            if (player == Lighter.player) Lighter.clearAndReload();
+            if (player == Detective.player) Detective.clearAndReload();
+            if (player == TimeMaster.player) TimeMaster.clearAndReload();
+            if (player == Medic.player) Medic.clearAndReload();
+            if (player == Shifter.player) Shifter.clearAndReload();
+            if (player == Seer.player) Seer.clearAndReload();
+            if (player == Hacker.player) Hacker.clearAndReload();
+            if (player == Mini.player) Mini.clearAndReload();
+            if (player == Tracker.player) Tracker.clearAndReload();
+            if (player == Snitch.player) Snitch.clearAndReload();
+            if (player == Swapper.player) Swapper.clearAndReload();
+            if (player == Spy.player) Spy.clearAndReload();
+            if (player == SecurityGuard.player) SecurityGuard.clearAndReload();
+            if (player == Bait.player) Bait.clearAndReload();
+            if (player == Medium.player) Medium.clearAndReload();
 
             // Impostor roles
-            if (player == Morphling.morphling) Morphling.clearAndReload();
-            if (player == Camouflager.camouflager) Camouflager.clearAndReload();
-            if (player == Godfather.godfather) Godfather.clearAndReload();
-            if (player == Mafioso.mafioso) Mafioso.clearAndReload();
-            if (player == Janitor.janitor) Janitor.clearAndReload();
-            if (player == Vampire.vampire) Vampire.clearAndReload();
-            if (player == Eraser.eraser) Eraser.clearAndReload();
-            if (player == Trickster.trickster) Trickster.clearAndReload();
-            if (player == Cleaner.cleaner) Cleaner.clearAndReload();
-            if (player == Warlock.warlock) Warlock.clearAndReload();
-            if (player == Witch.witch) Witch.clearAndReload();
+            if (player == Morphling.player) Morphling.clearAndReload();
+            if (player == Camouflager.player) Camouflager.clearAndReload();
+            if (player == Godfather.player) Godfather.clearAndReload();
+            if (player == Mafioso.player) Mafioso.clearAndReload();
+            if (player == Janitor.player) Janitor.clearAndReload();
+            if (player == Vampire.player) Vampire.clearAndReload();
+            if (player == Eraser.player) Eraser.clearAndReload();
+            if (player == Trickster.player) Trickster.clearAndReload();
+            if (player == Cleaner.player) Cleaner.clearAndReload();
+            if (player == Warlock.player) Warlock.clearAndReload();
+            if (player == Witch.player) Witch.clearAndReload();
 
             // Other roles
-            if (player == Jester.jester) Jester.clearAndReload();
-            if (player == Arsonist.arsonist) Arsonist.clearAndReload();
-            if (player == Guesser.guesser) Guesser.clearAndReload();
+            if (player == Jester.player) Jester.clearAndReload();
+            if (player == Arsonist.player) Arsonist.clearAndReload();
+            if (player == Guesser.player) Guesser.clearAndReload();
             if (!ignoreLovers && (player == Lovers.lover1 || player == Lovers.lover2)) { // The whole Lover couple is being erased
                 Lovers.clearAndReload(); 
             }
-            if (player == Jackal.jackal) { // Promote Sidekick and hence override the the Jackal or erase Jackal
-                if (Sidekick.promotesToJackal && Sidekick.sidekick != null && !Sidekick.sidekick.Data.IsDead) {
+            if (player == Jackal.player) { // Promote Sidekick and hence override the the Jackal or erase Jackal
+                if (Sidekick.promotesToJackal && Sidekick.player != null && !Sidekick.player.Data.IsDead) {
                     RPCProcedure.sidekickPromotes();
                 } else {
                     Jackal.clearAndReload();
                 }
             }
-            if (player == Sidekick.sidekick) Sidekick.clearAndReload();
-            if (player == BountyHunter.bountyHunter) BountyHunter.clearAndReload();
-            if (player == Vulture.vulture) Vulture.clearAndReload();
-            if (player == Lawyer.lawyer) Lawyer.clearAndReload();
-            if (player == Pursuer.pursuer) Pursuer.clearAndReload();
+            if (player == Sidekick.player) Sidekick.clearAndReload();
+            if (player == BountyHunter.player) BountyHunter.clearAndReload();
+            if (player == Vulture.player) Vulture.clearAndReload();
+            if (player == Lawyer.player) Lawyer.clearAndReload();
+            if (player == Pursuer.player) Pursuer.clearAndReload();
         }
 
         public static void setFutureErased(byte playerId) {
@@ -661,7 +661,7 @@ namespace TheOtherRoles
             camera.Offset = new Vector3(0f, 0f, camera.Offset.z);
             if (PlayerControl.GameOptions.MapId == 2 || PlayerControl.GameOptions.MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
 
-            if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard) {
+            if (PlayerControl.LocalPlayer == SecurityGuard.player) {
                 camera.gameObject.SetActive(true);
                 camera.gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
             } else {
@@ -675,7 +675,7 @@ namespace TheOtherRoles
             if (vent == null) return;
 
             SecurityGuard.remainingScrews -= SecurityGuard.ventPrice;
-            if (PlayerControl.LocalPlayer == SecurityGuard.securityGuard) {
+            if (PlayerControl.LocalPlayer == SecurityGuard.player) {
                 PowerTools.SpriteAnim animator = vent.GetComponent<PowerTools.SpriteAnim>(); 
                 animator?.Stop();
                 vent.EnterVentAnim = vent.ExitVentAnim = null;
@@ -690,7 +690,7 @@ namespace TheOtherRoles
         public static void arsonistWin() {
             Arsonist.triggerArsonistWin = true;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                if (p != Arsonist.arsonist) p.Exiled();
+                if (p != Arsonist.player) p.Exiled();
             }
         }
 
@@ -707,10 +707,10 @@ namespace TheOtherRoles
         }
 
         public static void lawyerPromotesToPursuer() {
-            PlayerControl player = Lawyer.lawyer;
+            PlayerControl player = Lawyer.player;
             PlayerControl client = Lawyer.target;
             Lawyer.clearAndReload();
-            Pursuer.pursuer = player;
+            Pursuer.player = player;
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && client != null) {
                     Transform playerInfoTransform = client.nameText.transform.parent.FindChild("Info");
@@ -738,9 +738,9 @@ namespace TheOtherRoles
                 if (AmongUsClient.Instance.AmHost) 
                     MeetingHud.Instance.CheckForEndVoting();
             }
-            if (HudManager.Instance != null && Guesser.guesser != null)
+            if (HudManager.Instance != null && Guesser.player != null)
                 if (PlayerControl.LocalPlayer == dyingTarget) 
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(Guesser.guesser.Data, dyingTarget.Data);
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(Guesser.player.Data, dyingTarget.Data);
                 else if (dyingLoverPartner != null && PlayerControl.LocalPlayer == dyingLoverPartner) 
                     HudManager.Instance.KillOverlay.ShowKillAnimation(dyingLoverPartner.Data, dyingLoverPartner.Data);
             
@@ -749,7 +749,7 @@ namespace TheOtherRoles
                 RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.roleId == guessedRoleId);
                 string msg = $"Guesser guessed the role {roleInfo?.name ?? ""} for {guessedTarget.Data.PlayerName}!";
                 if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(Guesser.guesser, msg);
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(Guesser.player, msg);
                 if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
                     DestroyableSingleton<Assets.CoreScripts.Telemetry>.Instance.SendWho();
             }

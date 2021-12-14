@@ -268,10 +268,10 @@ namespace TheOtherRoles.Patches {
 
         private static void assignRoleTargets(RoleAssignmentData data) {
             // Set Lawyer Target
-            if (Lawyer.lawyer != null) {
+            if (Lawyer.player != null) {
                 var possibleTargets = new List<PlayerControl>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                    if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && (p.Data.Role.IsImpostor || p == Jackal.jackal))
+                    if (!p.Data.IsDead && !p.Data.Disconnected && p != Lovers.lover1 && p != Lovers.lover2 && (p.Data.Role.IsImpostor || p == Jackal.player))
                         possibleTargets.Add(p);
                 }
                 if (possibleTargets.Count == 0) {

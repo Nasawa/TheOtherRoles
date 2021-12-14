@@ -47,7 +47,7 @@ namespace TheOtherRoles.Objects {
             HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) => {
             Color c = color;
             if (!anonymousFootprints && owner != null) {
-                if (owner == Morphling.morphling && Morphling.morphTimer > 0 && Morphling.morphTarget?.Data != null)
+                if (owner == Morphling.player && Morphling.morphTimer > 0 && Morphling.morphTarget?.Data != null)
                     c = Palette.ShadowColors[Morphling.morphTarget.Data.DefaultOutfit.ColorId];
                 else if (Camouflager.camouflageTimer > 0)
                     c = Palette.PlayerColors[6];
