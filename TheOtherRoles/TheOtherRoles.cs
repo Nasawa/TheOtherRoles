@@ -712,17 +712,21 @@ namespace TheOtherRoles
         public static float cooldown = 30f;
         public static bool canUseVents = true;
         public static bool canKill = true;
+        public static bool wasSpy = false;
+        public static bool showsAsSpyIfWasSpy = false;
         public static bool promotesToJackal = true;
         public static bool hasImpostorVision = false;
 
         public static void clearAndReload() {
             sidekick = null;
             currentTarget = null;
+            wasSpy = false;
             cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
             canUseVents = CustomOptionHolder.sidekickCanUseVents.getBool();
             canKill = CustomOptionHolder.sidekickCanKill.getBool();
             promotesToJackal = CustomOptionHolder.sidekickPromotesToJackal.getBool();
             hasImpostorVision = CustomOptionHolder.jackalAndSidekickHaveImpostorVision.getBool();
+            showsAsSpyIfWasSpy = CustomOptionHolder.spyShowsAsImpostorWhenSidekicked.getBool();
         }
     }
 

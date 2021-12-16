@@ -161,6 +161,7 @@ namespace TheOtherRoles {
         public static CustomOption spyImpostorsCanKillAnyone;
         public static CustomOption spyCanEnterVents;
         public static CustomOption spyHasImpostorVision;
+        public static CustomOption spyShowsAsImpostorWhenSidekicked;
 
         public static CustomOption tricksterSpawnRate;
         public static CustomOption tricksterPlaceBoxCooldown;
@@ -403,6 +404,7 @@ namespace TheOtherRoles {
             spyImpostorsCanKillAnyone = CustomOption.Create(242, "Impostors Can Kill Anyone If There Is A Spy", true, spySpawnRate);
             spyCanEnterVents = CustomOption.Create(243, "Spy Can Enter Vents", false, spySpawnRate);
             spyHasImpostorVision = CustomOption.Create(244, "Spy Has Impostor Vision", false, spySpawnRate);
+            spyShowsAsImpostorWhenSidekicked = CustomOption.Create(245, "Spy Shows As Impostor When Sidekicked", false, spySpawnRate);
 
             securityGuardSpawnRate = CustomOption.Create(280, cs(SecurityGuard.color, "Security Guard"), rates, null, true);
             securityGuardCooldown = CustomOption.Create(281, "Security Guard Cooldown", 30f, 10f, 60f, 2.5f, securityGuardSpawnRate);

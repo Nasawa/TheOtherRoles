@@ -527,10 +527,13 @@ namespace TheOtherRoles
 
             if (!Jackal.canCreateSidekickFromImpostor && player.Data.Role.IsImpostor) {
                 Jackal.fakeSidekick = player;
-            } else {
+            } else
+            {
+                bool wasSpy = player == Spy.spy && Sidekick.showsAsSpyIfWasSpy;
                 DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 erasePlayerRoles(player.PlayerId, true);
                 Sidekick.sidekick = player;
+                Sidekick.wasSpy = wasSpy;
             }
             Jackal.canCreateSidekick = false;
         }
