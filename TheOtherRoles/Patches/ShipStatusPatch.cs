@@ -20,19 +20,19 @@ namespace TheOtherRoles.Patches {
             if (player == null || player.IsDead) // IsDead
                 __result = __instance.MaxLightRadius;
             else if (player.Role.IsImpostor
-                || (Jackal.player != null && Jackal.player.PlayerId == player.PlayerId && Jackal.hasImpostorVision)
-                || (Sidekick.player != null && Sidekick.player.PlayerId == player.PlayerId && Sidekick.hasImpostorVision)
-                || (Spy.player != null && Spy.player.PlayerId == player.PlayerId && Spy.hasImpostorVision)) // Impostor, Jackal/Sidekick or Spy with Impostor vision
+                || (Jackal.jackal != null && Jackal.jackal.PlayerId == player.PlayerId && Jackal.hasImpostorVision)
+                || (Sidekick.sidekick != null && Sidekick.sidekick.PlayerId == player.PlayerId && Sidekick.hasImpostorVision)
+                || (Spy.spy != null && Spy.spy.PlayerId == player.PlayerId && Spy.hasImpostorVision)) // Impostor, Jackal/Sidekick or Spy with Impostor vision
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
-            else if (Lighter.player != null && Lighter.player.PlayerId == player.PlayerId && Lighter.lighterTimer > 0f) // if player is Lighter and Lighter has his ability active
+            else if (Lighter.lighter != null && Lighter.lighter.PlayerId == player.PlayerId && Lighter.lighterTimer > 0f) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MaxLightRadius * Lighter.lighterModeLightsOffVision, __instance.MaxLightRadius * Lighter.lighterModeLightsOnVision, num);
-            else if (Trickster.player != null && Trickster.lightsOutTimer > 0f) {
+            else if (Trickster.trickster != null && Trickster.lightsOutTimer > 0f) {
                 float lerpValue = 1f;
                 if (Trickster.lightsOutDuration - Trickster.lightsOutTimer < 0.5f) lerpValue = Mathf.Clamp01((Trickster.lightsOutDuration - Trickster.lightsOutTimer) * 2);
                 else if (Trickster.lightsOutTimer < 0.5) lerpValue = Mathf.Clamp01(Trickster.lightsOutTimer * 2);
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1 - lerpValue) * PlayerControl.GameOptions.CrewLightMod; // Instant lights out? Maybe add a smooth transition?
             }
-            else if (Lawyer.player != null && Lawyer.player.PlayerId == player.PlayerId) // if player is Lighter and Lighter has his ability active
+            else if (Lawyer.lawyer != null && Lawyer.lawyer.PlayerId == player.PlayerId) // if player is Lighter and Lighter has his ability active
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius * Lawyer.vision, num);
             else
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;

@@ -30,7 +30,7 @@ namespace TheOtherRoles.Patches {
                         if (player == null || player.Data == null || player.Data.IsDead || player.Data.Disconnected) continue;
 
                         int currentVotes;
-                        int additionalVotes = (Mayor.player != null && Mayor.player.PlayerId == playerVoteArea.TargetPlayerId) ? 2 : 1; // Mayor vote
+                        int additionalVotes = (Mayor.mayor != null && Mayor.mayor.PlayerId == playerVoteArea.TargetPlayerId) ? 2 : 1; // Mayor vote
                         if (dictionary.TryGetValue(playerVoteArea.VotedFor, out currentVotes))
                             dictionary[playerVoteArea.VotedFor] = currentVotes + additionalVotes;
                         else
@@ -38,7 +38,7 @@ namespace TheOtherRoles.Patches {
                     }
                 }
                 // Swapper swap votes
-                if (Swapper.player != null && !Swapper.player.Data.IsDead) {
+                if (Swapper.swapper != null && !Swapper.swapper.Data.IsDead) {
                     PlayerVoteArea swapped1 = null;
                     PlayerVoteArea swapped2 = null;
                     foreach (PlayerVoteArea playerVoteArea in __instance.playerStates) {
@@ -118,7 +118,7 @@ namespace TheOtherRoles.Patches {
                     if (playerVoteArea.TargetPlayerId == Swapper.playerId1) swapped1 = playerVoteArea;
                     if (playerVoteArea.TargetPlayerId == Swapper.playerId2) swapped2 = playerVoteArea;
                 }
-                bool doSwap = swapped1 != null && swapped2 != null && Swapper.player != null && !Swapper.player.Data.IsDead;
+                bool doSwap = swapped1 != null && swapped2 != null && Swapper.swapper != null && !Swapper.swapper.Data.IsDead;
                 if (doSwap) {
                     __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
                     __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
@@ -152,7 +152,7 @@ namespace TheOtherRoles.Patches {
                         }
 
                         // Major vote, redo this iteration to place a second vote
-                        if (Mayor.player != null && voterState.VoterId == (sbyte)Mayor.player.PlayerId && !mayorFirstVoteDisplayed) {
+                        if (Mayor.mayor != null && voterState.VoterId == (sbyte)Mayor.mayor.PlayerId && !mayorFirstVoteDisplayed) {
                             mayorFirstVoteDisplayed = true;
                             j--;    
                         }
@@ -320,20 +320,20 @@ namespace TheOtherRoles.Patches {
         [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.Select))]
         class PlayerVoteAreaSelectPatch {
             static bool Prefix(MeetingHud __instance) {
-                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer == Guesser.player && guesserUI != null);
+                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer == Guesser.guesser && guesserUI != null);
             }
         }
 
 
         static void populateButtonsPostfix(MeetingHud __instance) {
             // Add Swapper Buttons
-            if (Swapper.player != null && PlayerControl.LocalPlayer == Swapper.player && !Swapper.player.Data.IsDead) {
+            if (Swapper.swapper != null && PlayerControl.LocalPlayer == Swapper.swapper && !Swapper.swapper.Data.IsDead) {
                 selections = new bool[__instance.playerStates.Length];
                 renderers = new SpriteRenderer[__instance.playerStates.Length];
 
                 for (int i = 0; i < __instance.playerStates.Length; i++) {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.player.PlayerId && Swapper.canOnlySwapOthers)) continue;
+                    if (playerVoteArea.AmDead || (playerVoteArea.TargetPlayerId == Swapper.swapper.PlayerId && Swapper.canOnlySwapOthers)) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject checkbox = UnityEngine.Object.Instantiate(template);
@@ -355,7 +355,7 @@ namespace TheOtherRoles.Patches {
             }
 
             // Add overlay for spelled players
-            if (Witch.player != null && Witch.futureSpelled != null) {
+            if (Witch.witch != null && Witch.futureSpelled != null) {
                 foreach (PlayerVoteArea pva in __instance.playerStates) {
                     if (Witch.futureSpelled.Any(x => x.PlayerId == pva.TargetPlayerId)) {
                         SpriteRenderer rend = (new GameObject()).AddComponent<SpriteRenderer>();
@@ -368,10 +368,10 @@ namespace TheOtherRoles.Patches {
             }
 
             // Add Guesser Buttons
-            if (Guesser.player != null && PlayerControl.LocalPlayer == Guesser.player && !Guesser.player.Data.IsDead && Guesser.remainingShots > 0) {
+            if (Guesser.guesser != null && PlayerControl.LocalPlayer == Guesser.guesser && !Guesser.guesser.Data.IsDead && Guesser.remainingShots > 0) {
                 for (int i = 0; i < __instance.playerStates.Length; i++) {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == Guesser.player.PlayerId) continue;
+                    if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == Guesser.guesser.PlayerId) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);

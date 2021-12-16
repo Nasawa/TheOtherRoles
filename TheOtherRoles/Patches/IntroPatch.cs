@@ -25,12 +25,12 @@ namespace TheOtherRoles.Patches {
                     player.SetFlipX(true);
                     MapOptions.playerIcons[p.PlayerId] = player;
 
-                    if (PlayerControl.LocalPlayer == Arsonist.player && p != Arsonist.player) {
+                    if (PlayerControl.LocalPlayer == Arsonist.arsonist && p != Arsonist.arsonist) {
                         player.transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + Vector3.right * playerCounter++ * 0.35f;
                         player.transform.localScale = Vector3.one * 0.2f;
                         player.setSemiTransparent(true);
                         player.gameObject.SetActive(true);
-                    } else if (PlayerControl.LocalPlayer == BountyHunter.player) {
+                    } else if (PlayerControl.LocalPlayer == BountyHunter.bountyHunter) {
                         player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0f, 0);
                         player.transform.localScale = Vector3.one * 0.4f;
                         player.gameObject.SetActive(false);
@@ -41,7 +41,7 @@ namespace TheOtherRoles.Patches {
             }
 
             // Force Bounty Hunter to load a new Bounty when the Intro is over
-            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.player) {
+            if (BountyHunter.bounty != null && PlayerControl.LocalPlayer == BountyHunter.bountyHunter) {
                 BountyHunter.bountyUpdateTimer = 0f;
                 if (HudManager.Instance != null) {
                     Vector3 bottomLeft = new Vector3(-HudManager.Instance.UseButton.transform.localPosition.x, HudManager.Instance.UseButton.transform.localPosition.y, HudManager.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
@@ -59,19 +59,19 @@ namespace TheOtherRoles.Patches {
     class IntroPatch {
         public static void setupIntroTeamIcons(IntroCutscene __instance, ref  Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam) {
             // Intro solo teams
-            if (PlayerControl.LocalPlayer == Jester.player || PlayerControl.LocalPlayer == Jackal.player || PlayerControl.LocalPlayer == Arsonist.player || PlayerControl.LocalPlayer == Vulture.player || PlayerControl.LocalPlayer == Lawyer.player) {
+            if (PlayerControl.LocalPlayer == Jester.jester || PlayerControl.LocalPlayer == Jackal.jackal || PlayerControl.LocalPlayer == Arsonist.arsonist || PlayerControl.LocalPlayer == Vulture.vulture || PlayerControl.LocalPlayer == Lawyer.lawyer) {
                 var soloTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 soloTeam.Add(PlayerControl.LocalPlayer);
                 yourTeam = soloTeam;
             }
 
             // Add the Spy to the Impostor team (for the Impostors)
-            if (Spy.player != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+            if (Spy.spy != null && PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
                 List<PlayerControl> players = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
                 var fakeImpostorTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>(); // The local player always has to be the first one in the list (to be displayed in the center)
                 fakeImpostorTeam.Add(PlayerControl.LocalPlayer);
                 foreach (PlayerControl p in players) {
-                    if (PlayerControl.LocalPlayer != p && (p == Spy.player || p.Data.Role.IsImpostor))
+                    if (PlayerControl.LocalPlayer != p && (p == Spy.spy || p.Data.Role.IsImpostor))
                         fakeImpostorTeam.Add(p);
                 }
                 yourTeam = fakeImpostorTeam;

@@ -17,7 +17,7 @@ namespace TheOtherRoles.Patches {
     class ExileControllerBeginPatch {
         public static void Prefix(ExileController __instance, [HarmonyArgument(0)]ref GameData.PlayerInfo exiled, [HarmonyArgument(1)]bool tie) {
             // Medic shield
-            if (Medic.player != null && AmongUsClient.Instance.AmHost && Medic.futureShielded != null && !Medic.player.Data.IsDead) { // We need to send the RPC from the host here, to make sure that the order of shifting and setting the shield is correct(for that reason the futureShifted and futureShielded are being synced)
+            if (Medic.medic != null && AmongUsClient.Instance.AmHost && Medic.futureShielded != null && !Medic.medic.Data.IsDead) { // We need to send the RPC from the host here, to make sure that the order of shifting and setting the shield is correct(for that reason the futureShifted and futureShielded are being synced)
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MedicSetShielded, Hazel.SendOption.Reliable, -1);
                 writer.Write(Medic.futureShielded.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -25,7 +25,7 @@ namespace TheOtherRoles.Patches {
             }
 
             // Shifter shift
-            if (Shifter.player != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null) { // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
+            if (Shifter.shifter != null && AmongUsClient.Instance.AmHost && Shifter.futureShift != null) { // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShifterShift, Hazel.SendOption.Reliable, -1);
                 writer.Write(Shifter.futureShift.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -34,7 +34,7 @@ namespace TheOtherRoles.Patches {
             Shifter.futureShift = null;
 
             // Eraser erase
-            if (Eraser.player != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null) {  // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
+            if (Eraser.eraser != null && AmongUsClient.Instance.AmHost && Eraser.futureErased != null) {  // We need to send the RPC from the host here, to make sure that the order of shifting and erasing is correct (for that reason the futureShifted and futureErased are being synced)
                 foreach (PlayerControl target in Eraser.futureErased) {
                     if (target != null && target.canBeErased()) {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ErasePlayerRoles, Hazel.SendOption.Reliable, -1);
@@ -47,18 +47,18 @@ namespace TheOtherRoles.Patches {
             Eraser.futureErased = new List<PlayerControl>();
 
             // Trickster boxes
-            if (Trickster.player != null && JackInTheBox.hasJackInTheBoxLimitReached()) {
+            if (Trickster.trickster != null && JackInTheBox.hasJackInTheBoxLimitReached()) {
                 JackInTheBox.convertToVents();
             }
 
             // Witch execute casted spells
-            if (Witch.player != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) {
-                bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.player.PlayerId;
-                bool witchDiesWithExiledLover = exiled != null && Lovers.existing() && Lovers.bothDie && (Lovers.lover1.PlayerId == Witch.player.PlayerId || Lovers.lover2.PlayerId == Witch.player.PlayerId) && (exiled.PlayerId == Lovers.lover1.PlayerId || exiled.PlayerId == Lovers.lover2.PlayerId);
+            if (Witch.witch != null && Witch.futureSpelled != null && AmongUsClient.Instance.AmHost) {
+                bool exiledIsWitch = exiled != null && exiled.PlayerId == Witch.witch.PlayerId;
+                bool witchDiesWithExiledLover = exiled != null && Lovers.existing() && Lovers.bothDie && (Lovers.lover1.PlayerId == Witch.witch.PlayerId || Lovers.lover2.PlayerId == Witch.witch.PlayerId) && (exiled.PlayerId == Lovers.lover1.PlayerId || exiled.PlayerId == Lovers.lover2.PlayerId);
 
                 if ((witchDiesWithExiledLover || exiledIsWitch) && Witch.witchVoteSavesTargets) Witch.futureSpelled = new List<PlayerControl>();
                 foreach (PlayerControl target in Witch.futureSpelled) {
-                    if (target != null && !target.Data.IsDead && Helpers.checkMuderAttempt(Witch.player, target, true) == MurderAttemptResult.PerformKill)
+                    if (target != null && !target.Data.IsDead && Helpers.checkMuderAttempt(Witch.witch, target, true) == MurderAttemptResult.PerformKill)
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedExilePlayer, Hazel.SendOption.Reliable, -1);
                         writer.Write(target.PlayerId);
@@ -110,11 +110,11 @@ namespace TheOtherRoles.Patches {
 
         static void WrapUpPostfix(GameData.PlayerInfo exiled) {
             // Mini exile lose condition
-            if (exiled != null && Mini.player != null && Mini.player.PlayerId == exiled.PlayerId && !Mini.isGrownUp() && !Mini.player.Data.Role.IsImpostor) {
+            if (exiled != null && Mini.mini != null && Mini.mini.PlayerId == exiled.PlayerId && !Mini.isGrownUp() && !Mini.mini.Data.Role.IsImpostor) {
                 Mini.triggerMiniLose = true;
             }
             // Jester win condition
-            else if (exiled != null && Jester.player != null && Jester.player.PlayerId == exiled.PlayerId) {
+            else if (exiled != null && Jester.jester != null && Jester.jester.PlayerId == exiled.PlayerId) {
                 Jester.triggerJesterWin = true;
             } 
 
@@ -122,13 +122,13 @@ namespace TheOtherRoles.Patches {
             CustomButton.MeetingEndedUpdate();
 
             // Mini set adapted cooldown
-            if (Mini.player != null && PlayerControl.LocalPlayer == Mini.player && Mini.player.Data.Role.IsImpostor) {
+            if (Mini.mini != null && PlayerControl.LocalPlayer == Mini.mini && Mini.mini.Data.Role.IsImpostor) {
                 var multiplier = Mini.isGrownUp() ? 0.66f : 2f;
-                Mini.player.SetKillTimer(PlayerControl.GameOptions.KillCooldown * multiplier);
+                Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * multiplier);
             }
 
             // Seer spawn souls
-            if (Seer.deadBodyPositions != null && Seer.player != null && PlayerControl.LocalPlayer == Seer.player && (Seer.mode == 0 || Seer.mode == 2)) {
+            if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) {
                 foreach (Vector3 pos in Seer.deadBodyPositions) {
                     GameObject soul = new GameObject();
                     soul.transform.position = pos;
@@ -154,7 +154,7 @@ namespace TheOtherRoles.Patches {
             Tracker.deadBodyPositions = new List<Vector3>();
 
             // Arsonist deactivate dead poolable players
-            if (Arsonist.player != null && Arsonist.player == PlayerControl.LocalPlayer) {
+            if (Arsonist.arsonist != null && Arsonist.arsonist == PlayerControl.LocalPlayer) {
                 int visibleCounter = 0;
                 Vector3 bottomLeft = new Vector3(-HudManager.Instance.UseButton.transform.localPosition.x, HudManager.Instance.UseButton.transform.localPosition.y, HudManager.Instance.UseButton.transform.localPosition.z);
                 bottomLeft += new Vector3(-0.25f, -0.25f, 0);
@@ -170,11 +170,11 @@ namespace TheOtherRoles.Patches {
             }
 
             // Force Bounty Hunter Bounty Update
-            if (BountyHunter.player != null && BountyHunter.player == PlayerControl.LocalPlayer)
+            if (BountyHunter.bountyHunter != null && BountyHunter.bountyHunter == PlayerControl.LocalPlayer)
                 BountyHunter.bountyUpdateTimer = 0f;
 
             // Medium spawn souls
-            if (Medium.player != null && PlayerControl.LocalPlayer == Medium.player) {
+            if (Medium.medium != null && PlayerControl.LocalPlayer == Medium.medium) {
                 if (Medium.souls != null) {
                     foreach (SpriteRenderer sr in Medium.souls) UnityEngine.Object.Destroy(sr.gameObject);
                     Medium.souls = new List<SpriteRenderer>();
@@ -194,7 +194,7 @@ namespace TheOtherRoles.Patches {
                 }
             }
 
-            if (Lawyer.player != null && PlayerControl.LocalPlayer == Lawyer.player && !Lawyer.player.Data.IsDead)
+            if (Lawyer.lawyer != null && PlayerControl.LocalPlayer == Lawyer.lawyer && !Lawyer.lawyer.Data.IsDead)
                 Lawyer.meetings++;
         }
     }
@@ -212,7 +212,7 @@ namespace TheOtherRoles.Patches {
                     }
                     // Hide number of remaining impostors on Jester win
                     if (id == StringNames.ImpostorsRemainP || id == StringNames.ImpostorsRemainS) {
-                        if (Jester.player != null && player.PlayerId == Jester.player.PlayerId) __result = "";
+                        if (Jester.jester != null && player.PlayerId == Jester.jester.PlayerId) __result = "";
                     }
                 }
             } catch {

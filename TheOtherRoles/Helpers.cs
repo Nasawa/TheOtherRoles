@@ -86,7 +86,7 @@ namespace TheOtherRoles {
 
         public static void handleVampireBiteOnBodyReport() {
             // Murder the bitten player and reset bitten (regardless whether the kill was successful or not)
-            Helpers.checkMuderAttemptAndKill(Vampire.player, Vampire.bitten, true, false);
+            Helpers.checkMuderAttemptAndKill(Vampire.vampire, Vampire.bitten, true, false);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.VampireSetBitten, Hazel.SendOption.Reliable, -1);
             writer.Write(byte.MaxValue);
             writer.Write(byte.MaxValue);
@@ -144,11 +144,11 @@ namespace TheOtherRoles {
         }
 
         public static bool hasFakeTasks(this PlayerControl player) {
-            return (player == Jester.player || player == Jackal.player || player == Sidekick.player || player == Arsonist.player || player == Vulture.player || Jackal.formerJackals.Contains(player));
+            return (player == Jester.jester || player == Jackal.jackal || player == Sidekick.sidekick || player == Arsonist.arsonist || player == Vulture.vulture || Jackal.formerJackals.Contains(player));
         }
 
         public static bool canBeErased(this PlayerControl player) {
-            return (player != Jackal.player && player != Sidekick.player && !Jackal.formerJackals.Contains(player));
+            return (player != Jackal.jackal && player != Sidekick.sidekick && !Jackal.formerJackals.Contains(player));
         }
 
         public static void clearAllTasks(this PlayerControl player) {
@@ -207,9 +207,9 @@ namespace TheOtherRoles {
             else if (!MapOptions.hidePlayerNames) return false; // All names are visible
             else if (source == null || target == null) return true;
             else if (source == target) return false; // Player sees his own name
-            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.player)) return false; // Members of team Impostors see the names of Impostors/Spies
+            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor || target == Spy.spy)) return false; // Members of team Impostors see the names of Impostors/Spies
             else if ((source == Lovers.lover1 || source == Lovers.lover2) && (target == Lovers.lover1 || target == Lovers.lover2)) return false; // Members of team Lovers see the names of each other
-            else if ((source == Jackal.player || source == Sidekick.player) && (target == Jackal.player || target == Sidekick.player || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
+            else if ((source == Jackal.jackal || source == Sidekick.sidekick) && (target == Jackal.jackal || target == Sidekick.sidekick || target == Jackal.fakeSidekick)) return false; // Members of team Jackal see the names of each other
             return true;
         }
 
@@ -250,20 +250,20 @@ namespace TheOtherRoles {
 
         public static bool roleCanUseVents(this PlayerControl player) {
             bool roleCouldUse = false;
-            if (Engineer.player != null && Engineer.player == player)
+            if (Engineer.engineer != null && Engineer.engineer == player)
                 roleCouldUse = true;
-            else if (Jackal.canUseVents && Jackal.player != null && Jackal.player == player)
+            else if (Jackal.canUseVents && Jackal.jackal != null && Jackal.jackal == player)
                 roleCouldUse = true;
-            else if (Sidekick.canUseVents && Sidekick.player != null && Sidekick.player == player)
+            else if (Sidekick.canUseVents && Sidekick.sidekick != null && Sidekick.sidekick == player)
                 roleCouldUse = true;
-            else if (Spy.canEnterVents && Spy.player != null && Spy.player == player)
+            else if (Spy.canEnterVents && Spy.spy != null && Spy.spy == player)
                 roleCouldUse = true;
-            else if (Vulture.canUseVents && Vulture.player != null && Vulture.player == player)
+            else if (Vulture.canUseVents && Vulture.vulture != null && Vulture.vulture == player)
                 roleCouldUse = true;
             else if (player.Data?.Role != null && player.Data.Role.CanVent)  {
-                if (Janitor.player != null && Janitor.player == PlayerControl.LocalPlayer)
+                if (Janitor.janitor != null && Janitor.janitor == PlayerControl.LocalPlayer)
                     roleCouldUse = false;
-                else if (Mafioso.player != null && Mafioso.player == PlayerControl.LocalPlayer && Godfather.player != null && !Godfather.player.Data.IsDead)
+                else if (Mafioso.mafioso != null && Mafioso.mafioso == PlayerControl.LocalPlayer && Godfather.godfather != null && !Godfather.godfather.Data.IsDead)
                     roleCouldUse = false;
                 else
                     roleCouldUse = true;
@@ -297,12 +297,12 @@ namespace TheOtherRoles {
             }
 
             // Block impostor not fully grown mini kill
-            else if (Mini.player != null && target == Mini.player && !Mini.isGrownUp()) {
+            else if (Mini.mini != null && target == Mini.mini && !Mini.isGrownUp()) {
                 return MurderAttemptResult.SuppressKill;
             }
 
             // Block Time Master with time shield kill
-            else if (TimeMaster.shieldActive && TimeMaster.player != null && TimeMaster.player == target) {
+            else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target) {
                 if (!blockRewind) { // Only rewind the attempt was not called because a meeting startet 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -345,8 +345,8 @@ namespace TheOtherRoles {
             List<PlayerControl> team = new List<PlayerControl>();
             foreach(PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (player.Data.Role.IsImpostor && p.Data.Role.IsImpostor && player.PlayerId != p.PlayerId && team.All(x => x.PlayerId != p.PlayerId)) team.Add(p);
-                else if (player == Jackal.player && p == Sidekick.player) team.Add(p); 
-                else if (player == Sidekick.player && p == Jackal.player) team.Add(p);
+                else if (player == Jackal.jackal && p == Sidekick.sidekick) team.Add(p); 
+                else if (player == Sidekick.sidekick && p == Jackal.jackal) team.Add(p);
             }
             
             return team;
