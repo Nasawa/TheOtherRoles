@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using System;
+using System.Linq;
 using UnityEngine;
 using static TheOtherRoles.TheOtherRoles;
 using TheOtherRoles.Objects;
@@ -102,6 +103,57 @@ namespace TheOtherRoles
             timeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
         }
 
+        public static bool isSheriffKillableRole(int[] roles)
+        {
+            return roles.Contains((int) getTargetRole(Sheriff.currentTarget));
+        }
+
+        public static RoleId getTargetRole(PlayerControl currentTarget)
+        {
+            // this is a terrible way to do this but whatever
+            if (currentTarget == Jester.jester) return RoleId.Jester;
+            if (currentTarget == Mayor.mayor) return RoleId.Mayor;
+            if (currentTarget == Engineer.engineer) return RoleId.Engineer;
+            // if (currentTarget == Sheriff.player) return RoleId.Sheriff;
+            if (currentTarget == Lighter.lighter) return RoleId.Lighter;
+            if (currentTarget == Godfather.godfather) return RoleId.Godfather;
+            if (currentTarget == Mafioso.mafioso) return RoleId.Mafioso;
+            if (currentTarget == Janitor.janitor) return RoleId.Janitor;
+            if (currentTarget == Detective.detective) return RoleId.Detective;
+            if (currentTarget == TimeMaster.timeMaster) return RoleId.TimeMaster;
+            if (currentTarget == Medic.medic) return RoleId.Medic;
+            if (currentTarget == Shifter.shifter) return RoleId.Shifter;
+            if (currentTarget == Swapper.swapper) return RoleId.Swapper;
+            if (currentTarget == Lovers.lover1 || currentTarget == Lovers.lover2) return RoleId.Lover;
+            if (currentTarget == Seer.seer) return RoleId.Seer;
+            if (currentTarget == Morphling.morphling) return RoleId.Morphling;
+            if (currentTarget == Camouflager.camouflager) return RoleId.Camouflager;
+            if (currentTarget == Hacker.hacker) return RoleId.Hacker;
+            if (currentTarget == Mini.mini) return RoleId.Mini;
+            if (currentTarget == Tracker.tracker) return RoleId.Tracker;
+            if (currentTarget == Vampire.vampire) return RoleId.Vampire;
+            if (currentTarget == Snitch.snitch) return RoleId.Snitch;
+            if (currentTarget == Jackal.jackal) return RoleId.Jackal;
+            if (currentTarget == Sidekick.sidekick) return RoleId.Sidekick;
+            if (currentTarget == Eraser.eraser) return RoleId.Eraser;
+            if (currentTarget == Spy.spy) return RoleId.Spy;
+            if (currentTarget == Trickster.trickster) return RoleId.Trickster;
+            if (currentTarget == Cleaner.cleaner) return RoleId.Cleaner;
+            if (currentTarget == Warlock.warlock) return RoleId.Warlock;
+            if (currentTarget == SecurityGuard.securityGuard) return RoleId.SecurityGuard;
+            if (currentTarget == Arsonist.arsonist) return RoleId.Arsonist;
+            if (currentTarget == Guesser.guesser) return RoleId.Guesser;
+            if (currentTarget == BountyHunter.bountyHunter) return RoleId.BountyHunter;
+            if (currentTarget == Bait.bait) return RoleId.Bait;
+            if (currentTarget == Vulture.vulture) return RoleId.Vulture;
+            if (currentTarget == Medium.medium) return RoleId.Medium;
+            if (currentTarget == Lawyer.lawyer) return RoleId.Lawyer;
+            if (currentTarget == Pursuer.pursuer) return RoleId.Pursuer;
+            if (currentTarget == Witch.witch) return RoleId.Witch;
+
+            return RoleId.Crewmate;
+        }
+
         public static void Postfix(HudManager __instance)
         {
             // Engineer Repair
@@ -196,6 +248,7 @@ namespace TheOtherRoles
                         if ((Sheriff.currentTarget.Data.Role.IsImpostor && (Sheriff.currentTarget != Mini.mini || Mini.isGrownUp())) ||
                             (Sheriff.spyCanDieToSheriff && Spy.spy == Sheriff.currentTarget) ||
                             (Sheriff.canKillNeutrals && (Arsonist.arsonist == Sheriff.currentTarget || Jester.jester == Sheriff.currentTarget || Vulture.vulture == Sheriff.currentTarget || Lawyer.lawyer == Sheriff.currentTarget || Pursuer.pursuer == Sheriff.currentTarget)) ||
+                            isSheriffKillableRole(Sheriff.killableRoles) ||
                             (Jackal.jackal == Sheriff.currentTarget || Sidekick.sidekick == Sheriff.currentTarget)) {
                             targetId = Sheriff.currentTarget.PlayerId;
                         }

@@ -107,6 +107,7 @@ namespace TheOtherRoles {
         public static CustomOption sheriffSpawnRate;
         public static CustomOption sheriffCooldown;
         public static CustomOption sheriffCanKillNeutrals;
+        public static List<CustomOption> sheriffCanKillRoles;
 
         public static CustomOption lighterSpawnRate;
         public static CustomOption lighterModeLightsOnVision;
@@ -353,6 +354,18 @@ namespace TheOtherRoles {
             sheriffSpawnRate = CustomOption.Create(100, cs(Sheriff.color, "Sheriff"), rates, null, true);
             sheriffCooldown = CustomOption.Create(101, "Sheriff Cooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
             sheriffCanKillNeutrals = CustomOption.Create(102, "Sheriff Can Kill Neutrals", false, sheriffSpawnRate);
+
+            var roles = Enum.GetValues(typeof(RoleId))
+                .Cast<RoleId>()
+                .ToDictionary(t => (int)t, t => t.ToString());
+            sheriffCanKillRoles = new List<CustomOption>();
+            foreach (var role in roles)
+            {
+                if (role.Value == "Sheriff") continue;
+                
+                var option = CustomOption.Create(Sheriff.killOption + role.Key, $"Sheriff Can Kill {role.Value}", false, sheriffSpawnRate);
+                sheriffCanKillRoles.Add(option);
+            }
 
             lighterSpawnRate = CustomOption.Create(110, cs(Lighter.color, "Lighter"), rates, null, true);
             lighterModeLightsOnVision = CustomOption.Create(111, "Lighter Mode Vision On Lights On", 2f, 0.25f, 5f, 0.25f, lighterSpawnRate);

@@ -8,7 +8,10 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Drawing;
 using System.IO;
+using System.Numerics;
+using TheOtherRoles.Interfaces;
 using UnityEngine;
 using TheOtherRoles.Objects;
 
@@ -148,10 +151,12 @@ namespace TheOtherRoles
         public static class Sheriff {
             public static PlayerControl sheriff;
             public static Color color = new Color32(248, 205, 70, byte.MaxValue);
+            public static int killOption = 650;
 
             public static float cooldown = 30f;
             public static bool canKillNeutrals = false;
             public static bool spyCanDieToSheriff = false;
+            public static int[] killableRoles;
 
             public static PlayerControl currentTarget;
 
@@ -161,6 +166,7 @@ namespace TheOtherRoles
                 cooldown = CustomOptionHolder.sheriffCooldown.getFloat();
                 canKillNeutrals = CustomOptionHolder.sheriffCanKillNeutrals.getBool();
                 spyCanDieToSheriff = CustomOptionHolder.spyCanDieToSheriff.getBool();
+                killableRoles = CustomOptionHolder.sheriffCanKillRoles.Where(x => x.selection > 0).Select(x => x.id - killOption).ToArray();
             }
         }
 
